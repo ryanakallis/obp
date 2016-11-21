@@ -1,0 +1,26 @@
+p#notice = notice
+
+p
+  strong Title:
+  = @post.title
+p
+  strong Body:
+  = @post.body
+p
+  strong Public:
+  = @post.public
+p
+  strong User:
+  = "#{@post.user.firstname.humanize} #{@post.user.lastname.humanize}"
+- if current_user && @post.commentable
+  = link_to 'Comment', new_comment_path(post_id: @post.id), id: "show_comment_button"
+  = ' | '
+= link_to 'Edit', edit_post_path(@post)
+= ' | '
+= link_to 'Back', posts_path
+
+- @post.comments.where(public: true).or(@post.comments.where(user_id: current_user.id)).each do | comment |
+  = comment.body
+
+div.hide
+  h1 HELLOOOO
